@@ -1,0 +1,30 @@
+import cv2
+import numpy as np
+
+def detect_color(image):
+    # Convert BGR to HSV
+    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+
+    # Define range of red color in HSV
+    lower_red = np.array([0,50,50])
+    upper_red = np.array([10,255,255])
+
+    # Threshold the HSV image to get only red colors
+    mask = cv2.inRange(hsv, lower_red, upper_red)
+
+    # Bitwise-AND mask and original image
+    res = cv2.bitwise_and(image, image, mask= mask)
+
+    return res
+
+# Read the image
+image = cv2.imread('https://www.color-meanings.com/wp-content/uploads/field-blooming-red-poppies-grass.jpeg')
+
+# Detect red color in the image
+red_detected = detect_color(image)
+
+# Display the original and color-detected images
+cv2.imshow('Original Image', image)
+cv2.imshow('Red Color Detected', red_detected)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
